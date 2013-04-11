@@ -1,14 +1,49 @@
-# @(#)Ident: perl_module.pm 2013-04-01 02:18 pjf ;
+# @(#)$Ident: UnixAuth.pm 2013-04-11 15:49 pjf ;
 
 package File::UnixAuth;
 
-use version; our $VERSION = qv( sprintf '0.1.%d', q$Rev: 1 $ =~ /\d+/gmx );
+use strict;
+use namespace::autoclean;
+use version; our $VERSION = qv( sprintf '0.16.%d', q$Rev: 2 $ =~ /\d+/gmx );
 
-use Class::Usul::Moose;
-use Class::Usul::Constants;
-use Class::Usul::Functions qw(throw);
+use File::DataClass::Constants;
+use File::UnixAuth::Result;
+use Moose;
 
-__PACKAGE__->meta->make_immutable;
+extends qw(File::DataClass::Schema);
+
+has '+result_source_attributes' =>
+   default                => sub { return {
+      group               => {
+         attributes       => [ qw(password gid members) ],
+         defaults         => { password => q(x) },
+         resultset_attributes => {
+            result_class  => q(File::UnixAuth::Result), }, },
+      passwd              => {
+         attributes       => [ qw(password id pgid gecos homedir shell
+                                  first_name last_name location work_phone
+                                  home_phone) ],
+         defaults         => { password => q(x) }, },
+      shadow              => {
+         attributes       => [ qw(password pwlast pwnext pwafter
+                                  pwwarn pwexpires pwdisable reserved) ],
+         defaults         => { password => q(*), pwlast    => 0,
+                               pwnext   => 0,    pwafter   => 99_999,
+                               pwwarn   => 7,    pwexpires => 90,
+                               reserved => NUL }, }, } };
+has '+storage_attributes' =>
+   default                => sub { return { backup => q(.bak), } };
+has '+storage_class'      =>
+   default                => q(+File::UnixAuth::Storage);
+has 'source_name'         => is => 'ro', isa => 'Str', required => TRUE;
+
+around 'source' => sub {
+   my ($orig, $self) = @_; return $self->$orig( $self->source_name );
+};
+
+around 'resultset' => sub {
+   my ($orig, $self) = @_; return $self->$orig( $self->source_name );
+};
 
 1;
 
@@ -18,30 +53,41 @@ __END__
 
 =head1 Name
 
-File::UnixAuth - <One-line description of module's purpose>
-
-=head1 Synopsis
-
-   use File::UnixAuth;
-   # Brief but working code examples
+File::UnixAuth - Result source definitions for the Unix authentication files
 
 =head1 Version
 
-This documents version v0.1.$Rev: 1 $ of L<File::UnixAuth>
+0.16.$Revision: 2 $
+
+=head1 Synopsis
 
 =head1 Description
 
 =head1 Configuration and Environment
 
+Sets these attributes:
+
+=over 3
+
+=back
+
 =head1 Subroutines/Methods
 
+=head2 group
+
+=head2 passwd
+
+=head2 shadow
+
 =head1 Diagnostics
+
+None
 
 =head1 Dependencies
 
 =over 3
 
-=item L<Class::Usul>
+=item L<File::DataClass::Schema>
 
 =back
 
@@ -55,13 +101,9 @@ There are no known bugs in this module.
 Please report problems to the address below.
 Patches are welcome
 
-=head1 Acknowledgements
-
-Larry Wall - For the Perl programming language
-
 =head1 Author
 
-Peter Flanigan, C<< <Support at RoxSoft dot co dot uk> >>
+Peter Flanigan, C<< @ <Support at RoxSoft dot co dot uk> >>
 
 =head1 License and Copyright
 
