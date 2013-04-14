@@ -1,10 +1,10 @@
-# @(#)$Ident: UnixAuth.pm 2013-04-11 15:49 pjf ;
+# @(#)$Ident: UnixAuth.pm 2013-04-14 16:04 pjf ;
 
 package File::UnixAuth;
 
 use strict;
 use namespace::autoclean;
-use version; our $VERSION = qv( sprintf '0.16.%d', q$Rev: 2 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.16.%d', q$Rev: 3 $ =~ /\d+/gmx );
 
 use File::DataClass::Constants;
 use File::UnixAuth::Result;
@@ -57,27 +57,36 @@ File::UnixAuth - Result source definitions for the Unix authentication files
 
 =head1 Version
 
-0.16.$Revision: 2 $
+0.16.$Revision: 3 $
 
 =head1 Synopsis
 
+   use File::UnixAuth;
+
+   my $unixauth_ref = File::UnixAuth->new( $unixauth_attributes );
+
 =head1 Description
+
+Extends L<File::DataClass::Schema>. Provides for the reading and
+writing of the the Unix F</etc/group>, F</etc/passwd>, and
+F</etc/shadow> files.
 
 =head1 Configuration and Environment
 
-Sets these attributes:
+Defines these attributes:
 
 =over 3
+
+=item C<source_name>
+
+A required string. Selects the required result source. Set to one of;
+C<group>, C<passwd>, or C<shadow>
 
 =back
 
 =head1 Subroutines/Methods
 
-=head2 group
-
-=head2 passwd
-
-=head2 shadow
+None
 
 =head1 Diagnostics
 
@@ -88,6 +97,10 @@ None
 =over 3
 
 =item L<File::DataClass::Schema>
+
+=item L<File::UnixAuth::Result>
+
+=item L<Moose>
 
 =back
 
@@ -103,7 +116,7 @@ Patches are welcome
 
 =head1 Author
 
-Peter Flanigan, C<< @ <Support at RoxSoft dot co dot uk> >>
+Peter Flanigan, C<< <pjfl@cpan.org> >>
 
 =head1 License and Copyright
 

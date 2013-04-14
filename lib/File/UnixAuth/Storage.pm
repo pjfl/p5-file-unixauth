@@ -1,10 +1,10 @@
-# @(#)$Ident: Storage.pm 2013-04-11 15:50 pjf ;
+# @(#)$Ident: Storage.pm 2013-04-14 16:09 pjf ;
 
 package File::UnixAuth::Storage;
 
 use strict;
 use namespace::autoclean;
-use version; our $VERSION = qv( sprintf '0.15.%d', q$Rev: 2 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.16.%d', q$Rev: 3 $ =~ /\d+/gmx );
 
 use File::DataClass::Constants;
 use Lingua::EN::NameParse;
@@ -151,7 +151,7 @@ File::UnixAuth::Storage - Unix authentication and authorisation file storage
 
 =head1 Version
 
-0.15.$Revision: 2 $
+0.16.$Revision: 3 $
 
 =head1 Synopsis
 

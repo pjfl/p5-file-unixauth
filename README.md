@@ -4,23 +4,32 @@ File::UnixAuth - Result source definitions for the Unix authentication files
 
 # Version
 
-0.16.$Revision: 2 $
+0.16.$Revision: 3 $
 
 # Synopsis
 
+    use File::UnixAuth;
+
+    my $unixauth_ref = File::UnixAuth->new( $unixauth_attributes );
+
 # Description
+
+Extends [File::DataClass::Schema](https://metacpan.org/module/File::DataClass::Schema). Provides for the reading and
+writing of the the Unix `/etc/group`, `/etc/passwd`, and
+`/etc/shadow` files.
 
 # Configuration and Environment
 
-Sets these attributes:
+Defines these attributes:
+
+- `source_name`
+
+    A required string. Selects the required result source. Set to one of;
+    `group`, `passwd`, or `shadow`
 
 # Subroutines/Methods
 
-## group
-
-## passwd
-
-## shadow
+None
 
 # Diagnostics
 
@@ -29,6 +38,8 @@ None
 # Dependencies
 
 - [File::DataClass::Schema](https://metacpan.org/module/File::DataClass::Schema)
+- [File::UnixAuth::Result](https://metacpan.org/module/File::UnixAuth::Result)
+- [Moose](https://metacpan.org/module/Moose)
 
 # Incompatibilities
 
@@ -42,7 +53,7 @@ Patches are welcome
 
 # Author
 
-Peter Flanigan, `@ <Support at RoxSoft dot co dot uk>`
+Peter Flanigan, `<pjfl@cpan.org>`
 
 # License and Copyright
 

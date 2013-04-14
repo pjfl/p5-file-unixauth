@@ -1,9 +1,9 @@
-# @(#)$Ident: Build.PL 2013-04-11 15:51 pjf ;
+# @(#)$Ident: Build.PL 2013-04-14 15:57 pjf ;
 
 use strict;
 use warnings;
 use inc::Bob; # Module::Build subclass
-use version; our $VERSION = qv( sprintf '0.16.%d', q$Rev: 2 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.16.%d', q$Rev: 3 $ =~ /\d+/gmx );
 
 Bob->new( {
    module    => q(File::UnixAuth),
@@ -12,7 +12,7 @@ Bob->new( {
       'perl'                  => 5.010,
       'namespace::autoclean'  => 0.13,
       'version'               => 0.77,
-      'File::DataClass'       => q(0.15.0),
+      'File::DataClass'       => q(0.16.0),
       'Lingua::EN::NameParse' => 1.28,
       'Moose'                 => 2.0801,
    },

@@ -1,10 +1,10 @@
-# @(#)$Ident: Result.pm 2013-04-11 15:50 pjf ;
+# @(#)$Ident: Result.pm 2013-04-14 16:09 pjf ;
 
 package File::UnixAuth::Result;
 
 use strict;
 use namespace::autoclean;
-use version; our $VERSION = qv( sprintf '0.15.%d', q$Rev: 2 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.16.%d', q$Rev: 3 $ =~ /\d+/gmx );
 
 use File::DataClass::Constants;
 use File::DataClass::Functions qw(is_member);
@@ -46,7 +46,7 @@ File::UnixAuth::Result - Unix authentication and authorisation file custom resul
 
 =head1 Version
 
-0.15.$Revision: 2 $
+0.16.$Revision: 3 $
 
 =head1 Synopsis
 
