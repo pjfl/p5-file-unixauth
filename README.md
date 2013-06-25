@@ -4,7 +4,7 @@ File::UnixAuth - Result source definitions for the Unix authentication files
 
 # Version
 
-0.16.$Revision: 3 $
+0.16.$Rev: 1 $
 
 # Synopsis
 
@@ -22,10 +22,23 @@ writing of the the Unix `/etc/group`, `/etc/passwd`, and
 
 Defines these attributes:
 
+- `result_source_attributes`
+
+    Defines the result sources and their attributes
+
 - `source_name`
 
     A required string. Selects the required result source. Set to one of;
     `group`, `passwd`, or `shadow`
+
+- `storage_attributes`
+
+    Change the defaults to create a backup file with a `.bak` extension
+
+Modifies these methods;
+
+- `resultset`
+- `source`
 
 # Subroutines/Methods
 
@@ -39,7 +52,7 @@ None
 
 - [File::DataClass::Schema](https://metacpan.org/module/File::DataClass::Schema)
 - [File::UnixAuth::Result](https://metacpan.org/module/File::UnixAuth::Result)
-- [Moose](https://metacpan.org/module/Moose)
+- [Moo](https://metacpan.org/module/Moo)
 
 # Incompatibilities
 
