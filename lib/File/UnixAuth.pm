@@ -1,10 +1,10 @@
-# @(#)$Ident: UnixAuth.pm 2013-06-22 01:38 pjf ;
+# @(#)$Ident: UnixAuth.pm 2013-07-28 18:10 pjf ;
 
 package File::UnixAuth;
 
 use 5.01;
 use namespace::sweep;
-use version; our $VERSION = qv( sprintf '0.17.%d', q$Rev: 1 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.17.%d', q$Rev: 2 $ =~ /\d+/gmx );
 
 use File::DataClass::Constants;
 use File::DataClass::Types  qw( Str );
@@ -59,7 +59,7 @@ File::UnixAuth - Result source definitions for the Unix authentication files
 
 =head1 Version
 
-0.16.$Rev: 1 $
+0.16.$Rev: 2 $
 
 =head1 Synopsis
 

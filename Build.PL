@@ -1,18 +1,18 @@
-# @(#)$Ident: Build.PL 2013-06-22 01:39 pjf ;
+# @(#)$Ident: Build.PL 2013-07-28 18:10 pjf ;
 
 use strict;
 use warnings;
 use inc::Bob; # Module::Build subclass
-use version; our $VERSION = qv( sprintf '0.17.%d', q$Rev: 1 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.17.%d', q$Rev: 2 $ =~ /\d+/gmx );
 
 Bob->new( {
-   module    => q(File::UnixAuth),
-   home_page => q(http://www.roxsoft.co.uk),
+   module    => 'File::UnixAuth',
+   home_page => 'http://www.roxsoft.co.uk',
    requires  => {
       'perl'                  => 5.01,
       'namespace::sweep'      => 0.006,
       'Class::Method::ModifiersX::Augment' => 0.001,
-      'File::DataClass'       => q(0.20.0),
+      'File::DataClass'       => q(0.22.0),
       'Lingua::EN::NameParse' => 1.28,
       'Moo'                   => 1.002, },
    recommends            => {

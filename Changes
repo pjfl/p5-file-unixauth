@@ -1,6 +1,7 @@
 Revision history for File::UnixAuth
 
-0.17.1    2013-06-25 19:22:14
+0.17.2    2013-07-28 19:11:33
+          - Bumped dependency on File::DataClass
           - Mooified
 
 0.16.3    2013-04-14 17:13:40
