@@ -4,7 +4,7 @@ File::UnixAuth - Result source definitions for the Unix authentication files
 
 # Version
 
-0.16.$Rev: 3 $
+0.16.$Rev: 5 $
 
 # Synopsis
 
