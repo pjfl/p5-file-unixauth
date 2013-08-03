@@ -4,7 +4,7 @@ File::UnixAuth - Result source definitions for the Unix authentication files
 
 # Version
 
-0.16.$Rev: 5 $
+Describes version 0.16.$Rev: 1 $ of [File::UnixAuth](https://metacpan.org/module/File::UnixAuth)
 
 # Synopsis
 
@@ -18,9 +18,13 @@ Extends [File::DataClass::Schema](https://metacpan.org/module/File::DataClass::S
 writing of the the Unix `/etc/group`, `/etc/passwd`, and
 `/etc/shadow` files.
 
+Since these files share a common format they all use the the same
+storage class [File::UnixAuth::Storage](https://metacpan.org/module/File::UnixAuth::Storage). Defines three result
+sources; `group`, `passwd`, and `shadow`
+
 # Configuration and Environment
 
-Defines these attributes:
+Defines these attributes;
 
 - `result_source_attributes`
 
