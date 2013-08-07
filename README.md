@@ -4,7 +4,7 @@ File::UnixAuth - Result source definitions for the Unix authentication files
 
 # Version
 
-Describes version 0.16.$Rev: 1 $ of [File::UnixAuth](https://metacpan.org/module/File::UnixAuth)
+Describes version 0.16.$Rev: 3 $ of [File::UnixAuth](https://metacpan.org/module/File::UnixAuth)
 
 # Synopsis
 
