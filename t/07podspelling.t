@@ -40,3 +40,4 @@ __DATA__
 peter
 flanigan
 File::UnixAuth
+merchantability

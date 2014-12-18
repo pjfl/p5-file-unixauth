@@ -1,5 +1,7 @@
 Revision history for File::UnixAuth
 
+          - Dropped Class::Method::ModifiersX::Augment
+
 0.22.1    2014-07-05 10:18:56
           - Replaced namespace::sweep with namespace::autoclean
           - ::Result::_source attr name change to result_source
