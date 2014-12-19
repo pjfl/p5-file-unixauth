@@ -8,7 +8,7 @@ use Lingua::EN::NameParse;
 
 extends q(File::DataClass::Storage);
 
-sub read_file_raw {
+sub read_from_file {
    my ($self, $rdr) = @_;
 
    $self->encoding and $rdr->encoding( $self->encoding );
@@ -16,7 +16,7 @@ sub read_file_raw {
    return $self->_read_filter( [ $rdr->chomp->getlines ] );
 }
 
-sub write_file_raw {
+sub write_to_file {
    my ($self, $wtr, $data) = @_;
 
    $self->encoding and $wtr->encoding( $self->encoding );
@@ -149,9 +149,9 @@ File::UnixAuth::Storage - Unix authentication and authorisation file storage
 
 =head1 Subroutines/Methods
 
-=head2 read_file_raw
+=head2 read_from_file
 
-=head2 write_file_raw
+=head2 write_to_file
 
 =head1 Diagnostics
 
