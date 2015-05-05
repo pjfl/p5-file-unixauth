@@ -2,9 +2,9 @@ package File::UnixAuth::Result;
 
 use namespace::autoclean;
 
-use Moo;
-use File::DataClass::Constants;
+use File::DataClass::Constants qw( FALSE );
 use File::DataClass::Functions qw( is_member );
+use Moo;
 
 extends q(File::DataClass::Result);
 

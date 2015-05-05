@@ -2,36 +2,28 @@ package File::UnixAuth::Storage;
 
 use namespace::autoclean;
 
-use Moo;
-use File::DataClass::Constants;
+use File::DataClass::Constants qw( NUL SPC TRUE );
 use Lingua::EN::NameParse;
+use Moo;
 
 extends q(File::DataClass::Storage);
 
-sub read_from_file {
-   my ($self, $rdr) = @_;
+# Private functions
+my $_original_order = sub {
+   my ($hash, $lhs, $rhs) = @_;
 
-   $self->encoding and $rdr->encoding( $self->encoding );
-
-   return $self->_read_filter( [ $rdr->chomp->getlines ] );
-}
-
-sub write_to_file {
-   my ($self, $wtr, $data) = @_;
-
-   $self->encoding and $wtr->encoding( $self->encoding );
-
-   $wtr->println( @{ $self->_write_filter( $data ) } );
-   return $data;
+   # New elements will be  added at the end
+   exists $hash->{ $lhs }->{_order_by} or return  1;
+   exists $hash->{ $rhs }->{_order_by} or return -1;
+   return $hash->{ $lhs }->{_order_by} <=> $hash->{ $rhs }->{_order_by};
 };
 
 # Private methods
-sub _deflate {
+my $_deflate = sub {
    my ($self, $hash, $id) = @_; my $attr = $hash->{ $id };
 
-   if (exists $attr->{members}) {
-       $attr->{members} = join q(,), @{ $attr->{members} || [] };
-   }
+   exists $attr->{members}
+      and $attr->{members} = join ',', @{ $attr->{members} || [] };
 
    if (exists $attr->{first_name}) {
       my $gecos = $attr->{first_name} || NUL;
@@ -39,18 +31,18 @@ sub _deflate {
       $gecos .= $attr->{last_name} ? SPC.$attr->{last_name} : NUL;
 
       if ($attr->{location} or $attr->{work_phone} or $attr->{home_phone}) {
-         $gecos .= q(,).($attr->{location  } || q(?));
-         $gecos .= q(,).($attr->{work_phone} || q(?));
-         $gecos .= q(,).($attr->{home_phone} || q(?));
+         $gecos .= ','.($attr->{location  } || '?');
+         $gecos .= ','.($attr->{work_phone} || '?');
+         $gecos .= ','.($attr->{home_phone} || '?');
       }
 
       $attr->{gecos} = $gecos;
    }
 
    return;
-}
+};
 
-sub _inflate {
+my $_inflate = sub {
    my ($self, $hash, $id, $name_parser) = @_; my $attr = $hash->{ $id };
 
    if (exists $attr->{members}) {
@@ -59,7 +51,7 @@ sub _inflate {
 
    if (exists $attr->{gecos}) {
       my %names  = ( surname_1 => NUL, );
-      my @fields = qw(full_name location work_phone home_phone);
+      my @fields = qw( full_name location work_phone home_phone );
 
       @{ $attr }{ @fields } = split m{ , }mx, $attr->{gecos} || NUL;
 
@@ -76,14 +68,14 @@ sub _inflate {
    }
 
    return;
-}
+};
 
-sub _read_filter {
+my $_read_filter = sub {
    my ($self, $buf) = @_; my $hash = {}; my $order = 0;
 
    my $source_name = $self->schema->source_name;
    my $fields      = $self->schema->source->attributes;
-   my %args        = ( force_case => 1, lc_prefix => 1 );
+   my %args        = ( force_case => TRUE, lc_prefix => TRUE );
    my $name_parser = Lingua::EN::NameParse->new( %args );
 
    for my $line (@{ $buf || [] }) {
@@ -92,42 +84,50 @@ sub _read_filter {
       @attr{ @{ $fields } } = @rest;
       $attr{ _order_by    } = $order++;
       $hash->{ $id } = \%attr;
-      $self->_inflate( $hash, $id, $name_parser );
+      $self->$_inflate( $hash, $id, $name_parser );
    }
 
    return { $source_name => $hash };
-}
+};
 
-sub _write_filter {
+my $_write_filter = sub {
    my ($self, $data) = @_; my $buf = [];
 
    my $source_name = $self->schema->source_name;
    my $fields      = $self->schema->source->attributes;
    my $hash        = $data->{ $source_name };
 
-   $source_name eq q(passwd) and $fields = [ @{ $fields }[ 0 .. 5 ] ];
+   $source_name eq 'passwd' and $fields = [ @{ $fields }[ 0 .. 5 ] ];
 
-   for my $id (sort { __original_order( $hash, $a, $b ) } keys %{ $hash }) {
-      $self->_deflate( $hash, $id );
+   for my $id (sort { $_original_order->( $hash, $a, $b ) } keys %{ $hash }) {
+      $self->$_deflate( $hash, $id );
 
       my $attr = $hash->{ $id }; delete $attr->{_order_by};
-      my $line = join q(:), map { $attr->{ $_ } // NUL } @{ $fields };
+      my $line = join ':', map { $attr->{ $_ } // NUL } @{ $fields };
 
       push @{ $buf }, "${id}:${line}";
    }
 
    return $buf;
+};
+
+# Public methods
+sub read_from_file {
+   my ($self, $rdr) = @_;
+
+   $self->encoding and $rdr->encoding( $self->encoding );
+
+   return $self->$_read_filter( [ $rdr->chomp->getlines ] );
 }
 
-# Private subroutines
-sub __original_order {
-   my ($hash, $lhs, $rhs) = @_;
+sub write_to_file {
+   my ($self, $wtr, $data) = @_;
 
-   # New elements will be  added at the end
-   exists $hash->{ $lhs }->{_order_by} or return  1;
-   exists $hash->{ $rhs }->{_order_by} or return -1;
-   return $hash->{ $lhs }->{_order_by} <=> $hash->{ $rhs }->{_order_by};
-}
+   $self->encoding and $wtr->encoding( $self->encoding );
+
+   $wtr->println( @{ $self->$_write_filter( $data ) } );
+   return $data;
+};
 
 1;
 

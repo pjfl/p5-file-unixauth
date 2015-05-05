@@ -2,12 +2,12 @@ package File::UnixAuth;
 
 use 5.010001;
 use namespace::autoclean;
-use version; our $VERSION = qv( sprintf '0.22.%d', q$Rev: 3 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.22.%d', q$Rev: 4 $ =~ /\d+/gmx );
 
-use Moo;
-use File::DataClass::Constants;
-use File::DataClass::Types  qw( CodeRef Maybe Str );
+use File::DataClass::Constants qw( NUL TRUE );
+use File::DataClass::Types     qw( CodeRef Maybe Str );
 use File::UnixAuth::Result;
+use Moo;
 
 extends q(File::DataClass::Schema);
 
@@ -59,7 +59,7 @@ File::UnixAuth - Read and write the Unix authentication files
 
 =head1 Version
 
-Describes version v0.22.$Rev: 3 $ of L<File::UnixAuth>
+Describes version v0.22.$Rev: 4 $ of L<File::UnixAuth>
 
 =head1 Synopsis
 
