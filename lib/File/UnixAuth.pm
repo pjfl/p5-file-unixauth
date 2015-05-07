@@ -2,7 +2,7 @@ package File::UnixAuth;
 
 use 5.010001;
 use namespace::autoclean;
-use version; our $VERSION = qv( sprintf '0.22.%d', q$Rev: 4 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.22.%d', q$Rev: 5 $ =~ /\d+/gmx );
 
 use File::DataClass::Constants qw( NUL TRUE );
 use File::DataClass::Types     qw( CodeRef Maybe Str );
@@ -59,7 +59,7 @@ File::UnixAuth - Read and write the Unix authentication files
 
 =head1 Version
 
-Describes version v0.22.$Rev: 4 $ of L<File::UnixAuth>
+Describes version v0.22.$Rev: 5 $ of L<File::UnixAuth>
 
 =head1 Synopsis
 
@@ -153,7 +153,7 @@ Peter Flanigan, C<< <pjfl@cpan.org> >>
 
 =head1 License and Copyright
 
-Copyright (c) 2014 Peter Flanigan. All rights reserved
+Copyright (c) 2015 Peter Flanigan. All rights reserved
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself. See L<perlartistic>
