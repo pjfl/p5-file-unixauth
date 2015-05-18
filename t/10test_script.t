@@ -8,17 +8,17 @@ use Test::More;
 use Test::Requires { version => 0.88 };
 use Module::Build;
 
-my $notes = {}; my $perl_ver;
+my $builder; my $notes = {}; my $perl_ver;
 
 BEGIN {
-   my $builder = eval { Module::Build->current };
+   $builder   = eval { Module::Build->current };
    $builder and $notes = $builder->notes;
-   $perl_ver = $notes->{min_perl_version} || 5.008;
+   $perl_ver  = $notes->{min_perl_version} || 5.008;
 }
 
 use Test::Requires "${perl_ver}";
 use Test::Requires 'Hash::MoreUtils';
-use Test::Requires { Moo => 1.003001 };
+use Test::Requires { Moo => 2.000001 };
 use English qw( -no_match_vars );
 use File::DataClass::IO;
 use Text::Diff;

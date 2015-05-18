@@ -2,7 +2,7 @@ package File::UnixAuth;
 
 use 5.010001;
 use namespace::autoclean;
-use version; our $VERSION = qv( sprintf '0.22.%d', q$Rev: 5 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.22.%d', q$Rev: 6 $ =~ /\d+/gmx );
 
 use File::DataClass::Constants qw( NUL TRUE );
 use File::DataClass::Types     qw( CodeRef Maybe Str );
@@ -53,13 +53,21 @@ __END__
 
 =pod
 
+=begin html
+
+<a href="https://travis-ci.org/pjfl/p5-file-unixauth"><img src="https://travis-ci.org/pjfl/p5-file-unixauth.svg?branch=master" alt="Travis CI Badge"></a>
+<a href="http://badge.fury.io/pl/File-UnixAuth"><img src="https://badge.fury.io/pl/File-UnixAuth.svg" alt="CPAN Badge"></a>
+<a href="http://cpants.cpanauthors.org/dist/File-UnixAuth"><img src="http://cpants.cpanauthors.org/dist/File-UnixAuth.png" alt="Kwalitee Badge"></a>
+
+=end html
+
 =head1 Name
 
 File::UnixAuth - Read and write the Unix authentication files
 
 =head1 Version
 
-Describes version v0.22.$Rev: 5 $ of L<File::UnixAuth>
+Describes version v0.22.$Rev: 6 $ of L<File::UnixAuth>
 
 =head1 Synopsis
 

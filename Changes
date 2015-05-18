@@ -1,5 +1,6 @@
 Revision history for File::UnixAuth
 
+          - Added badges and public repository
           - Updated copyright year
           - Updated prereqs
           - Storage API methods now called read_from_file and write_to_file
