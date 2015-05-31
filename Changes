@@ -1,5 +1,6 @@
 Revision history for File::UnixAuth
 
+0.23.1    2015-05-31 13:02:28
           - Added badges and public repository
           - Updated copyright year
           - Updated prereqs

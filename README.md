@@ -10,7 +10,7 @@ File::UnixAuth - Read and write the Unix authentication files
 
 # Version
 
-Describes version v0.22.$Rev: 6 $ of [File::UnixAuth](https://metacpan.org/pod/File::UnixAuth)
+Describes version v0.23.$Rev: 1 $ of [File::UnixAuth](https://metacpan.org/pod/File::UnixAuth)
 
 # Synopsis
 
