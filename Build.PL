@@ -20,7 +20,6 @@ my $prereqs  = {
   },
   'requires' => {
     'File::DataClass' => 'v0.60.0',
-    'Lingua::EN::NameParse' => '1.32',
     'Moo' => '2.000001',
     'namespace::autoclean' => '0.22',
     'perl' => '5.010001'

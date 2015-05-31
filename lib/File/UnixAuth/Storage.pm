@@ -2,8 +2,7 @@ package File::UnixAuth::Storage;
 
 use namespace::autoclean;
 
-use File::DataClass::Constants qw( NUL SPC TRUE );
-use Lingua::EN::NameParse;
+use File::DataClass::Constants qw( FALSE NUL SPC TRUE );
 use Moo;
 
 extends q(File::DataClass::Storage);
@@ -18,52 +17,49 @@ my $_original_order = sub {
    return $hash->{ $lhs }->{_order_by} <=> $hash->{ $rhs }->{_order_by};
 };
 
+my $_parse_name = sub {
+   my $full_name = shift; $full_name or return {};
+
+   my ($first_name, $last_name) = split SPC, $full_name, 2;
+
+   return { first_name => $first_name, last_name => $last_name };
+};
+
 # Private methods
 my $_deflate = sub {
-   my ($self, $hash, $id) = @_; my $attr = $hash->{ $id };
+   my ($self, $hash, $id) = @_; my $attr = $hash->{ $id }; my $gecos = NUL;
 
-   exists $attr->{members}
-      and $attr->{members} = join ',', @{ $attr->{members} || [] };
+   exists $attr->{members   }
+      and $attr->{members   } = join ',', @{ $attr->{members   } || [] };
+   exists $attr->{first_name} and $gecos .=  $attr->{first_name} // NUL;
+   exists $attr->{last_name } and $gecos .=  $attr->{last_name }
+                                       ? SPC.$attr->{last_name }  : NUL;
 
-   if (exists $attr->{first_name}) {
-      my $gecos = $attr->{first_name} || NUL;
-
-      $gecos .= $attr->{last_name} ? SPC.$attr->{last_name} : NUL;
-
-      if ($attr->{location} or $attr->{work_phone} or $attr->{home_phone}) {
-         $gecos .= ','.($attr->{location  } || '?');
-         $gecos .= ','.($attr->{work_phone} || '?');
-         $gecos .= ','.($attr->{home_phone} || '?');
-      }
-
-      $attr->{gecos} = $gecos;
+   if ($attr->{location} or $attr->{work_phone} or $attr->{home_phone}) {
+      $gecos .= ','.($attr->{location  } // NUL);
+      $gecos .= ','.($attr->{work_phone} // NUL);
+      $gecos .= ','.($attr->{home_phone} // NUL);
    }
 
+   $gecos and $attr->{gecos} = $gecos;
    return;
 };
 
 my $_inflate = sub {
-   my ($self, $hash, $id, $name_parser) = @_; my $attr = $hash->{ $id };
+   my ($self, $hash, $id) = @_; my $attr = $hash->{ $id };
 
-   if (exists $attr->{members}) {
-       $attr->{members} = [ split m{ , }mx, $attr->{members} || NUL ];
-   }
+   exists $attr->{members}
+      and $attr->{members} = [ split m{ , }mx, $attr->{members} // NUL ];
 
    if (exists $attr->{gecos}) {
-      my %names  = ( surname_1 => NUL, );
       my @fields = qw( full_name location work_phone home_phone );
 
-      @{ $attr }{ @fields } = split m{ , }mx, $attr->{gecos} || NUL;
+      @{ $attr }{ @fields } = split m{ , }mx, $attr->{gecos} // NUL;
 
-      # Weird logic is correct from L::EN::NP POD
-      if ($attr->{full_name}
-          and not $name_parser->parse( $attr->{full_name} )) {
-         %names = $name_parser->components;
-      }
-      else { $names{given_name_1} = $attr->{full_name} || $id }
+      my $names  = $_parse_name->( $attr->{full_name} );
 
-      $attr->{first_name} = $names{given_name_1};
-      $attr->{last_name } = $names{surname_1   };
+      $attr->{first_name} = $names->{first_name} // NUL;
+      $attr->{last_name } = $names->{last_name } // NUL;
       delete $attr->{full_name}; delete $attr->{gecos};
    }
 
@@ -75,8 +71,6 @@ my $_read_filter = sub {
 
    my $source_name = $self->schema->source_name;
    my $fields      = $self->schema->source->attributes;
-   my %args        = ( force_case => TRUE, lc_prefix => TRUE );
-   my $name_parser = Lingua::EN::NameParse->new( %args );
 
    for my $line (@{ $buf || [] }) {
       my ($id, @rest) = split m{ : }mx, $line; my %attr = ();
@@ -84,7 +78,7 @@ my $_read_filter = sub {
       @attr{ @{ $fields } } = @rest;
       $attr{ _order_by    } = $order++;
       $hash->{ $id } = \%attr;
-      $self->$_inflate( $hash, $id, $name_parser );
+      $self->$_inflate( $hash, $id );
    }
 
    return { $source_name => $hash };
@@ -124,8 +118,8 @@ sub write_to_file {
    my ($self, $wtr, $data) = @_;
 
    $self->encoding and $wtr->encoding( $self->encoding );
-
    $wtr->println( @{ $self->$_write_filter( $data ) } );
+
    return $data;
 };
 

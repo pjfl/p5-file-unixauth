@@ -1,5 +1,9 @@
 Revision history for File::UnixAuth
 
+0.24.1    2015-05-31 14:24:43
+          - Dropped Lingua::EN::NameParse
+            There is something quite wrong with that package
+
 0.23.1    2015-05-31 13:02:28
           - Added badges and public repository
           - Updated copyright year
