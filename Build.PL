@@ -3,10 +3,6 @@ use warnings;
 
 use Module::Build 0.4004;
 
-sub testing { $ENV{AUTOMATED_TESTING} || $ENV{PERL_CPAN_REPORTER_CONFIG}
-                                      || $ENV{PERL5_CPANPLUS_IS_VERSION} }
-sub whimper { print {*STDOUT} $_[ 0 ]."\n"; exit 0 }
-
 my $perl_ver = 5.010001;
 my $name     = 'File-UnixAuth'; $name =~ s{ - }{::}gmx;
 my $prereqs  = {
@@ -19,23 +15,39 @@ my $prereqs  = {
     'version' => '0.88'
   },
   'requires' => {
-    'File::DataClass' => 'v0.60.0',
+    'File::DataClass' => 'v0.66.0',
     'Moo' => '2.000001',
-    'namespace::autoclean' => '0.22',
+    'namespace::autoclean' => '0.26',
     'perl' => '5.010001'
   },
+  'test_requires' => {
+    'File::Spec' => '0',
+    'Hash::MoreUtils' => '0.05',
+    'Module::Build' => '0.4004',
+    'Module::Metadata' => '0',
+    'Sys::Hostname' => '0',
+    'Text::Diff' => '0',
+    'version' => '0.88'
+  },
+};
+my $testing  = sub { $ENV{AUTOMATED_TESTING}
+                  || $ENV{PERL_CPAN_REPORTER_CONFIG}
+                  || $ENV{PERL5_CPANPLUS_IS_VERSION} };
+my $whimper  = sub { print {*STDOUT} $_[ 0 ]."\n"; exit 0 };
+my $stop     = sub {
+   $testing->() or $whimper->( $_[ 0 ] );
+   $prereqs->{build_requires} = { %{ $prereqs->{configure_requires} } };
+   $prereqs->{test_requires } = { %{ $prereqs->{configure_requires} } };
+   $prereqs->{test_requires }->{ 'Test::Requires' } = 0.06;
+   delete $prereqs->{requires};
 };
 
-if ($] < $perl_ver) { # Not interested in reports below min perl ver
-   testing or whimper "Minimum required Perl version is ${perl_ver}";
-   $prereqs->{build_requires} = { %{ $prereqs->{configure_requires} } };
-   $prereqs->{build_requires}->{ 'Test::Requires' } = 0.06;
-   delete $prereqs->{requires};
-}
+# Not interested in reports below min perl ver
+$] < $perl_ver and $stop->( "Minimum required Perl version is ${perl_ver}" );
 
 Module::Build->new(
    'module_name' => $name,
-   'notes'       => { min_perl_version => $perl_ver, testing => testing },
+   'notes'       => { min_perl_version => $perl_ver, testing => $testing->() },
    %{ $prereqs },
 
 )->create_build_script;
