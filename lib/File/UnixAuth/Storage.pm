@@ -129,6 +129,8 @@ __END__
 
 =pod
 
+=encoding utf-8
+
 =head1 Name
 
 File::UnixAuth::Storage - Unix authentication and authorisation file storage

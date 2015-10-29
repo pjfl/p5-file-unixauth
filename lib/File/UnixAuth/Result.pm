@@ -12,9 +12,8 @@ after 'update' => sub {
    my $self   = shift;
    my $source = $self->can( 'result_source' )
               ? $self->result_source : $self->_source;
-   my $hook   = $source->schema->post_update_hook;
+   my $hook   = $source->schema->post_update_hook; $hook and $hook->( $self );
 
-   $hook and $hook->( $self );
    return;
 };
 
@@ -43,6 +42,8 @@ sub remove_user_from_group {
 __END__
 
 =pod
+
+=encoding utf-8
 
 =head1 Name
 

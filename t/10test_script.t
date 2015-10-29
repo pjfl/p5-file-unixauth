@@ -5,6 +5,7 @@ use Test::Requires 'Hash::MoreUtils';
 use Test::Requires { Moo => 2.000001 };
 use English qw( -no_match_vars );
 use File::DataClass::IO;
+use File::Spec::Functions qw( catfile );
 use Text::Diff;
 
 use_ok 'File::UnixAuth';
