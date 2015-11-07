@@ -26,6 +26,8 @@ BEGIN {
    $Bin =~ m{ : .+ : }mx and plan skip_all => 'Two colons in $Bin path';
 
    if ($notes->{testing}) {
+      $host eq 'foobar.spo.virtua.com.br' and plan skip_all =>
+         'Broken smoker 35c6ef92-842a-11e5-8e8c-72a0c69edca9';
    }
 }
 
