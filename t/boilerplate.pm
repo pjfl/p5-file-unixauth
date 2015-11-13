@@ -28,6 +28,8 @@ BEGIN {
    if ($notes->{testing}) {
       $host eq 'foobar.spo.virtua.com.br' and plan skip_all =>
          'Broken smoker 35c6ef92-842a-11e5-8e8c-72a0c69edca9';
+      $host eq 'vm-debian-001' and plan skip_all =>
+         'Broken smoker da099c60-896d-11e5-b552-e159351a082c';
    }
 }
 

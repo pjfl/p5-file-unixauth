@@ -1,5 +1,7 @@
 Revision history for File::UnixAuth
 
+          - Another broken smoker added to exception list
+
 0.25.1    2015-11-07 14:01:52
           - Strictified POD encoding
           - Travis uses containerised builds
