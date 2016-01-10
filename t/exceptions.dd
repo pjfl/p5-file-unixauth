@@ -1,0 +1,6 @@
+do { my $x = {
+       'foobar.spo.virtua.com.br' => '35c6ef92-842a-11e5-8e8c-72a0c69edca9',
+       'vm-debian-001' => 'da099c60-896d-11e5-b552-e159351a082c'
+     };
+  $x;
+ }

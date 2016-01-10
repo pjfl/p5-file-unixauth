@@ -1,5 +1,7 @@
 Revision history for File::UnixAuth
 
+          - Toolchain update
+
 0.26.1    2015-11-13 00:34:52
           - Another broken smoker added to exception list
 
