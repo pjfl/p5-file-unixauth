@@ -10,29 +10,35 @@ extends q(File::DataClass::Result);
 
 after 'update' => sub {
    my $self   = shift;
-   my $source = $self->can( 'result_source' )
+   my $source = $self->can('result_source')
               ? $self->result_source : $self->_source;
-   my $hook   = $source->schema->post_update_hook; $hook and $hook->( $self );
+   my $hook   = $source->schema->post_update_hook;
+
+   $hook->($self) if $hook;
 
    return;
 };
 
 sub add_user_to_group {
-   my ($self, $user) = @_; my $users = $self->members;
+   my ($self, $user) = @_;
 
-   is_member $user, $users and return FALSE;
+   my $users = $self->members;
 
-   $self->members( [ @{ $users }, $user ] );
+   return FALSE if is_member $user, $users;
+
+   $self->members([ @{$users}, $user ]);
 
    return $self->update;
 }
 
 sub remove_user_from_group {
-   my ($self, $user) = @_; my $users = $self->members;
+   my ($self, $user) = @_;
 
-   is_member $user, $users or return FALSE;
+   my $users = $self->members;
 
-   $self->members( [ grep { $_ ne $user } @{ $users } ] );
+   return FALSE unless is_member $user, $users;
+
+   $self->members([ grep { $_ ne $user } @{$users} ]);
 
    return $self->update;
 }
@@ -99,7 +105,7 @@ Peter Flanigan, C<< <Support at RoxSoft.co.uk> >>
 
 =head1 License and Copyright
 
-Copyright (c) 2016 Peter Flanigan. All rights reserved
+Copyright (c) 2021 Peter Flanigan. All rights reserved
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself. See L<perlartistic>

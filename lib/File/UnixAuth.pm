@@ -2,7 +2,7 @@ package File::UnixAuth;
 
 use 5.010001;
 use namespace::autoclean;
-use version; our $VERSION = qv( sprintf '0.26.%d', q$Rev: 2 $ =~ /\d+/gmx );
+use version; our $VERSION = qv( sprintf '0.26.%d', q$Rev: 3 $ =~ /\d+/gmx );
 
 use File::DataClass::Constants qw( NUL TRUE );
 use File::DataClass::Types     qw( CodeRef Maybe Str );
@@ -11,40 +11,59 @@ use Moo;
 
 extends q(File::DataClass::Schema);
 
-has 'post_update_hook'    => is => 'ro', isa => Maybe[CodeRef];
+has 'post_update_hook' => is => 'ro', isa => Maybe[CodeRef];
 
 has '+result_source_attributes' =>
-   default                => sub { {
-      group               => {
-         attributes       => [ qw( password gid members ) ],
-         defaults         => { password => 'x' },
-         resultset_attributes => {
-            result_class  => 'File::UnixAuth::Result', }, },
-      passwd              => {
-         attributes       => [ qw( password id pgid gecos homedir shell
-                                   first_name last_name location work_phone
-                                   home_phone ) ],
-         defaults         => { password => 'x' }, },
-      shadow              => {
-         attributes       => [ qw( password pwlast pwnext pwafter
-                                   pwwarn pwexpires pwdisable reserved ) ],
-         defaults         => { password => '*',  pwlast    => 0,
-                               pwnext   => 0,    pwafter   => 99_999,
-                               pwwarn   => 7,    pwexpires => 90,
-                               reserved => NUL }, }, } };
+   default => sub {
+      return {
+         group               => {
+            attributes       => [ qw( password gid members ) ],
+            defaults         => { password => 'x' },
+            resultset_attributes => {
+               result_class  => 'File::UnixAuth::Result',
+            },
+         },
+         passwd              => {
+            attributes       => [
+               qw( password id pgid gecos homedir shell first_name last_name
+                   location work_phone home_phone )
+            ],
+            defaults         => { password => 'x' },
+         },
+         shadow              => {
+            attributes       => [
+               qw( password pwlast pwnext pwafter pwwarn pwexpires pwdisable
+                   reserved )
+            ],
+            defaults         => {
+               password      => '*',
+               pwlast        => 0,
+               pwnext        => 0,
+               pwafter       => 99_999,
+               pwwarn        => 7,
+               pwexpires     => 90,
+               reserved      => NUL,
+            },
+         },
+      };
+   };
 
 has '+storage_attributes' => default => sub { { backup => '.bak', } };
 
-has '+storage_class'      => default => '+File::UnixAuth::Storage';
+has '+storage_class' => default => '+File::UnixAuth::Storage';
 
-has 'source_name'         => is => 'ro', isa => Str, required => TRUE;
+has 'source_name' => is => 'ro', isa => Str, required => TRUE;
 
 around 'source' => sub {
-   my ($orig, $self) = @_; return $self->$orig( $self->source_name );
+   my ($orig, $self) = @_;
+
+   return $self->$orig($self->source_name);
 };
 
 around 'resultset' => sub {
-   my ($orig, $self) = @_; return $self->$orig( $self->source_name );
+   my ($orig, $self) = @_;
+
+   return $self->$orig($self->source_name);
 };
 
 1;
@@ -69,7 +88,7 @@ File::UnixAuth - Read and write the Unix authentication files
 
 =head1 Version
 
-Describes version v0.26.$Rev: 2 $ of L<File::UnixAuth>
+Describes version v0.26.$Rev: 3 $ of L<File::UnixAuth>
 
 =head1 Synopsis
 
@@ -163,7 +182,7 @@ Peter Flanigan, C<< <pjfl@cpan.org> >>
 
 =head1 License and Copyright
 
-Copyright (c) 2016 Peter Flanigan. All rights reserved
+Copyright (c) 2021 Peter Flanigan. All rights reserved
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself. See L<perlartistic>

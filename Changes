@@ -1,5 +1,6 @@
 Revision history for File::UnixAuth
 
+          - Refactored coding style
           - Toolchain update
 
 0.26.1    2015-11-13 00:34:52

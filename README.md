@@ -10,7 +10,7 @@ File::UnixAuth - Read and write the Unix authentication files
 
 # Version
 
-Describes version v0.26.$Rev: 2 $ of [File::UnixAuth](https://metacpan.org/pod/File::UnixAuth)
+Describes version v0.26.$Rev: 3 $ of [File::UnixAuth](https://metacpan.org/pod/File::UnixAuth)
 
 # Synopsis
 
@@ -89,7 +89,7 @@ Peter Flanigan, `<pjfl@cpan.org>`
 
 # License and Copyright
 
-Copyright (c) 2016 Peter Flanigan. All rights reserved
+Copyright (c) 2021 Peter Flanigan. All rights reserved
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself. See [perlartistic](https://metacpan.org/pod/perlartistic)
